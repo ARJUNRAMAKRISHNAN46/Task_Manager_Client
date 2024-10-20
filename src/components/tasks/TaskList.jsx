@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 import TaskViewPage from "./TaskView";
+import AddTaskModal from "../../components/modals/AddTaskModal";
 
 const priorityOptions = {
   high: { label: "High Priority", color: "red" },
@@ -87,6 +88,7 @@ export default function TaskList() {
   const [filter, setFilter] = useState({ status: null, priority: null });
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTask, setSelectedTask] = useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -181,7 +183,10 @@ export default function TaskList() {
         <div className="flex items-center justify-between">
           <h2 className={`text-3xl font-bold ${textColor}`}>Tasks</h2>
           <div className="flex gap-4">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors">
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+            >
               <Plus className="h-4 w-4" />
               Add Task
             </button>
@@ -321,6 +326,12 @@ export default function TaskList() {
           theme={theme}
         />
       )}
+      <AddTaskModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAddTask={(newTask) => setTasks([...tasks, newTask])}
+        theme={theme}
+      />
     </div>
   );
 }

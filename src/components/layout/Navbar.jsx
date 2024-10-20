@@ -1,10 +1,16 @@
 import React from "react";
 import { Sun, Moon, Menu, X } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/sign-in");
+  };
 
   return (
     <nav
@@ -28,6 +34,7 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center space-x-4">
             <button
+              onClick={handleNavigate}
               className={`px-3 py-2 rounded-md ${
                 theme === "light"
                   ? "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
