@@ -11,6 +11,7 @@ import {
   CalendarDays,
 } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
+import TaskViewPage from "./TaskView";
 
 const priorityOptions = {
   high: { label: "High Priority", color: "red" },
@@ -47,7 +48,12 @@ const Dropdown = ({ trigger, items, onItemSelect }) => {
     theme === "light" ? "hover:bg-gray-50" : "hover:bg-gray-700";
 
   return (
-    <div className={`relative ${theme === "light" ? "text-gray-900" : "text-gray-200"}`} ref={dropdownRef}>
+    <div
+      className={`relative ${
+        theme === "light" ? "text-gray-900" : "text-gray-200"
+      }`}
+      ref={dropdownRef}
+    >
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${borderColor} ${bgColor} ${hoverColor} transition-colors`}
@@ -80,6 +86,7 @@ export default function TaskList() {
   const { theme, toggleTheme } = useTheme();
   const [filter, setFilter] = useState({ status: null, priority: null });
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTask, setSelectedTask] = useState(null);
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -261,7 +268,8 @@ export default function TaskList() {
           {filteredTasks.map((task) => (
             <div
               key={task.id}
-              className={`rounded-lg ${cardBgColor} shadow-sm border ${borderColor} p-4 transition-all duration-200 hover:shadow-md`}
+              className={`rounded-lg ${cardBgColor} shadow-sm border ${borderColor} p-4 transition-all duration-200 hover:shadow-md cursor-pointer`}
+              onClick={() => setSelectedTask(task)}
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-start space-x-3">
@@ -306,6 +314,13 @@ export default function TaskList() {
           ))}
         </div>
       </div>
+      {selectedTask && (
+        <TaskViewPage
+          task={selectedTask}
+          onClose={() => setSelectedTask(null)}
+          theme={theme}
+        />
+      )}
     </div>
   );
 }
